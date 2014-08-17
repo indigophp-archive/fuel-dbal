@@ -1,0 +1,37 @@
+{
+    "name": "indigophp/fuel-dbal",
+    "type": "fuel-package",
+    "description": "Fuel DBAL integration",
+    "license": "MIT",
+    "keywords": ["fuel", "dbal"],
+    "homepage": "https://indigophp.com",
+    "authors": [
+        {
+            "name": "Márk Sági-Kazár",
+            "email": "mark.sagikazar@gmail.com"
+        }
+    ],
+    "require": {
+        "composer/installers": "~1.0",
+        "indigophp/fuel-core": "~1.0",
+        "doctrine/dbal": "~2.4"
+    },
+    "require-dev": {
+        "codeception/codeception": "~2.0.0",
+        "codeception/mockery-module": "dev-master",
+        "indigophp/codeception-fuel-module": "dev-develop"
+    },
+    "autoload": {
+        "psr-0": {
+            "Doctrine\\DBAL\\": "lib/"
+        },
+        "psr-4": {
+            "Indigo\\Fuel\\": "classes/"
+        }
+    },
+    "extra": {
+        "installer-name": "dbal"
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}
