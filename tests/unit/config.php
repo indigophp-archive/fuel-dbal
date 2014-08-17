@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Indigo DBAL package.
+ * This file is part of the Fuel DBAL package.
  *
  * (c) Indigo Development Team
  *
