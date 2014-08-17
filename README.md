@@ -4,6 +4,7 @@
 [![Latest Stable Version](https://poser.pugx.org/indigophp/fuel-dbal/v/stable.png)](https://packagist.org/packages/indigophp/fuel-dbal)
 [![Total Downloads](https://poser.pugx.org/indigophp/fuel-dbal/downloads.png)](https://packagist.org/packages/indigophp/fuel-dbal)
 [![License](https://poser.pugx.org/indigophp/fuel-dbal/license.png)](https://packagist.org/packages/indigophp/fuel-dbal)
+[![Dependency Status](http://www.versioneye.com/user/projects/53f01c7313bb06c58c000412/badge.svg?style=flat)](http://www.versioneye.com/user/projects/53f01c7313bb06c58c000412)
 
 **This package is a wrapper around [doctrine/dbal](https://github.com/doctrine/dbal) package.**
 
