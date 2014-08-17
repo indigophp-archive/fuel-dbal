@@ -30,6 +30,13 @@ class Dbal extends \Facade
 	 */
 	protected static $_config = 'dbal';
 
+	public static function _init()
+	{
+		\Config::load('db', true);
+
+		parent::_init();
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
