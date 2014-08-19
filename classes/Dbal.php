@@ -30,6 +30,9 @@ class Dbal extends \Facade
 	 */
 	protected static $_config = 'dbal';
 
+	/**
+	 * Make sure db config is loaded
+	 */
 	public static function _init()
 	{
 		\Config::load('db', true);
@@ -78,13 +81,15 @@ class Dbal extends \Facade
 	 */
 	public static function parseFuelConfig(array $config)
 	{
-		$driver = $config['type'];
+		$params = array();
 
-		if ($driver === 'pdo')
+		$params['driver'] = $config['type'];
+
+		if ($params['driver'] === 'pdo')
 		{
 			list($type, $dsn) = explode(':', $config['connection']['dsn'], 2);
 
-			$driver .= '_' . $type;
+			$params['driver'] .= '_' . $type;
 
 			$dsn = explode(';', $dsn);
 
@@ -92,20 +97,19 @@ class Dbal extends \Facade
 			{
 				list($k, $v) = explode('=', $d);
 
-				$config[$k] = $v;
+				$params[$k] = $v;
 			}
 		}
 		else
 		{
-			$config['dbname'] = $config['connection']['database'];
-			$config['host'] = $config['connection']['hostname'];
+			$params['dbname'] = $config['connection']['database'];
+			$params['host'] = $config['connection']['hostname'];
+			$params['port'] = \Arr::get($config, 'connection.port');
 		}
 
-		$config['driver'] = $driver;
+		$params['user'] = \Arr::get($config, 'connection.username');
+		$params['password'] = \Arr::get($config, 'connection.password');
 
-		$config['user'] = \Arr::get($config, 'connection.username');
-		$config['password'] = \Arr::get($config, 'connection.password');
-
-		return $config;
+		return $params;
 	}
 }

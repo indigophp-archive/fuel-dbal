@@ -62,6 +62,7 @@ class DbalTest extends Test
 				[
 					'driver'   => 'mysqli',
 					'host'     => 'localhost',
+					'port'     => null,
 					'dbname'   => 'fuel_dev',
 					'user'     => null,
 					'password' => null,
@@ -91,8 +92,6 @@ class DbalTest extends Test
 	 */
 	public function testParser($config, $expected)
 	{
-		$expected = array_merge($config, $expected);
-
 		$this->assertEquals($expected, Dbal::parseFuelConfig($config));
 	}
 }
