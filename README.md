@@ -34,6 +34,32 @@ $conn \Dbal::forge('default');
 `Dbal` class extends `Facade` and uses `Facade\Instance` from [indigophp/fuel-core](https://github.com/indigophp/fuel-core).
 
 
+### Configuration
+
+``` php
+	'dbname'       => 'database'
+	'host'         => 'localhost'
+	'port'         => 1234
+	'user'         => 'user',
+	'password'     => 'secret',
+	'driver'       => 'pdo_mysql',
+	'driver_class' => 'MyNamespace\\MyDriverImpl', // the DBAL driverClass option
+	'options'      => array( // the DBAL driverOptions option
+	    'foo' => 'bar',
+	),
+	'path'             => '',
+	'wrapper_class'    => 'MyDoctrineDbalConnectionWrapper', // the DBAL wrapperClass option
+	'charset'          => 'UTF8',
+	'profiling'        => true,
+	'mapping_types'    => array(
+	    'enum' => 'string',
+	),
+	'types' => array(
+	    'custom' => 'MyCustomType',
+	),
+```
+
+
 ### Profiling
 
 No configuration is required beyond enabling profiling for your connection. Queries sent through DBAL will automatically appear in the Fuel profiler.
