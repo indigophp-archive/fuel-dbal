@@ -13,7 +13,7 @@
     ],
     "require": {
         "composer/installers": "~1.0",
-        "indigophp/fuel-core": "~1.0",
+        "indigophp/fuel-core": "dev-develop",
         "doctrine/dbal": "~2.4"
     },
     "require-dev": {

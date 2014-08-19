@@ -28,15 +28,29 @@ class DbalTest extends Test
 	 */
 	public function _before()
 	{
-		$config = require __DIR__.'/config.php';
+		$dbal = require __DIR__.'/config/dbal.php';
+		$db = require __DIR__.'/config/db.php';
 
-		\Config::set('db', $config);
+		\Config::set('dbal', $dbal);
+		\Config::set('db', $db);
 	}
 
 	/**
 	 * @covers ::forge
 	 */
 	public function testForge()
+	{
+		\Config::delete('dbal.connections');
+
+		$conn = Dbal::forge(null);
+
+		$this->assertInstanceOf('Doctrine\\DBAL\\Connection', $conn);
+	}
+
+	/**
+	 * @covers ::forge
+	 */
+	public function testAdvancedForge()
 	{
 		$conn = Dbal::forge(null);
 

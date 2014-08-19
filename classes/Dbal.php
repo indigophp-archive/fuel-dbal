@@ -15,6 +15,8 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Logging\ProfilerLogger;
+use Doctrine\DBAL\Event\Listeners\MysqlSessionInit;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * DBAL Connection Facade
@@ -40,36 +42,89 @@ class Dbal extends \Facade
 		\Config::load('db', true);
 
 		parent::_init();
+
+		// Register types
+		$types = \Config::get('dbal.types', array());
+
+		foreach ($types as $type => $class)
+		{
+			Type::addType($type, $class);
+		}
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public static function forge(
-		$instance = 'default',
-		Configuration $config = null,
+		$instance = null,
+		Configuration $configuration = null,
 		EventManager $eventManager = null
 	) {
-		$params = \Config::get('dbal.' . $instance, false);
-
-		if ($params === false)
+		// Try to get the default instance
+		if ($instance === null)
 		{
-			if ($instance === null)
-			{
-				$instance = \Config::get('db.active', 'default');
-			}
-
-			$params = \Config::get('db.' . $instance, false);
-
-			if ($params === false)
-			{
-				throw new \InvalidArgumentException('This is not a valid instance: '. $instance);
-			}
-
-			$params = static::parseFuelConfig($params);
+			static::$_instance = $instance = \Config::get('dbal.default_connection', \Config::get('db.active', 'default'));
 		}
 
-		$conn = DriverManager::getConnection($params, $config, $eventManager);
+		$params = array();
+
+		// Remove some keys from config, not used anymore
+		$config = \Config::get('dbal', array());
+		$config = \Arr::filter_keys($config, array('default_connection', 'connections', 'types'), true);
+
+		// We have defined connections
+		if ($connections = \Config::get('dbal.connections', false))
+		{
+			// Get connections and retrive connection specific configuration
+			if ($params = \Arr::get($connections, $instance, array()))
+			{
+				$params = array_merge($config, $params);
+			}
+		}
+		elseif ($instance === static::$_instance)
+		{
+			$params = $config;
+		}
+
+		// Legacy fuel db config support
+		if ($db = \Config::get('db.' . $instance, false))
+		{
+			$db = static::parseFuelConfig($db);
+			$params = array_merge($db, $params);
+		}
+
+		// We don't have any data
+		if (empty($params))
+		{
+			throw new \InvalidArgumentException('No connection data for this instance: ' . $instance);
+		}
+
+		$conn = DriverManager::getConnection($params, $configuration, $eventManager);
+
+		// PDO ignores the charset property before 5.3.6 so the init listener has to be used instead
+		//@codeCoverageIgnoreStart
+		if (isset($params['charset']) and version_compare(PHP_VERSION, '5.3.6', '<'))
+		{
+			if (
+				(isset($params['driver']) and stripos($params['driver'], 'mysql') !== false) or
+				(isset($params['driver_class']) and stripos($params['driver_class'], 'mysql') !== false)
+			) {
+				$mysqlSessionInit = new MysqlSessionInit($params['charset']);
+				$conn->getEventManager()->addEventSubscriber($mysqlSessionInit);
+			}
+		}
+		//@codeCoverageIgnoreEnd
+
+		// Register mapping types
+		if (isset($params['mapping_types']))
+		{
+			$platform = $conn->getDatabasePlatform();
+
+			foreach ($params['mapping_types'] as $dbType => $doctrineType)
+			{
+				$platform->registerDoctrineTypeMapping($dbType, $doctrineType);
+			}
+		}
 
 		if (\Arr::get($params, 'profiling', false))
 		{
