@@ -57,7 +57,13 @@ class Dbal extends \Facade
 				$instance = \Config::get('db.active', 'default');
 			}
 
-			$params = \Config::get('db.' . $instance, array());
+			$params = \Config::get('db.' . $instance, false);
+
+			if ($params === false)
+			{
+				throw new \InvalidArgumentException('This is not a valid instance: '. $instance);
+			}
+
 			$params = static::parseFuelConfig($params);
 		}
 

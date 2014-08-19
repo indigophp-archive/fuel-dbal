@@ -44,6 +44,15 @@ class DbalTest extends Test
 	}
 
 	/**
+	 * @covers            ::forge
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testForgeInvalid()
+	{
+		$conn = Dbal::forge('invalid');
+	}
+
+	/**
 	 * Provides test data for testParser
 	 *
 	 * @return []
