@@ -32,6 +32,8 @@ class Dbal extends \Facade
 
 	/**
 	 * Make sure db config is loaded
+	 *
+	 * @codeCoverageIgnore
 	 */
 	public static function _init()
 	{
@@ -115,6 +117,10 @@ class Dbal extends \Facade
 
 		$params['user'] = \Arr::get($config, 'connection.username');
 		$params['password'] = \Arr::get($config, 'connection.password');
+		$params['charset'] = \Arr::get($config, 'charset');
+
+		// Introduced this from Fuel, also available in DBAL config
+		$params['profiling'] = \Arr::get($config, 'profiling', false);
 
 		return $params;
 	}
