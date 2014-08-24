@@ -42,7 +42,7 @@ class DbalTest extends Test
 	{
 		\Config::delete('dbal.connections');
 
-		$conn = Dbal::forge(null);
+		$conn = Dbal::forge();
 
 		$this->assertInstanceOf('Doctrine\\DBAL\\Connection', $conn);
 	}
@@ -52,7 +52,7 @@ class DbalTest extends Test
 	 */
 	public function testAdvancedForge()
 	{
-		$conn = Dbal::forge(null);
+		$conn = Dbal::forge();
 
 		$this->assertInstanceOf('Doctrine\\DBAL\\Connection', $conn);
 	}
@@ -63,7 +63,7 @@ class DbalTest extends Test
 	 */
 	public function testForgeInvalid()
 	{
-		$conn = Dbal::forge('invalid');
+		Dbal::forge('invalid');
 	}
 
 	/**
