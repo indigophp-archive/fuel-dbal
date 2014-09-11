@@ -4,5 +4,3 @@
 $package = \Codeception\Configuration::projectDir();
 
 \Package::load('dbal', $package);
-
-require_once __DIR__.'/stubs/Types.php';
