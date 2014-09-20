@@ -42,7 +42,7 @@ class ProfilerLogger implements SQLLogger
 	 *
 	 * @var array
 	 */
-	protected $queries = array();
+	protected $queries = [];
 
 	/**
 	 * Creates a new Profiler Logger
@@ -90,7 +90,7 @@ class ProfilerLogger implements SQLLogger
 
 			if (empty($types))
 			{
-				$types = array();
+				$types = [];
 			}
 
 			$placeholders = SQLParserUtils::getPlaceholderPositions($sql, $isPositional);
@@ -101,7 +101,7 @@ class ProfilerLogger implements SQLLogger
 			}
 			else
 			{
-				$map = array();
+				$map = [];
 
 				foreach ($placeholders as $name => $positions)
 				{
