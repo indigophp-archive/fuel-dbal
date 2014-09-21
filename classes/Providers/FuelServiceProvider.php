@@ -72,7 +72,7 @@ class FuelServiceProvider extends ServiceProvider
 				$db = $this->parseFuelConfig($db);
 			}
 
-			$config = array_merge($db, $this->defaultConfig, \Config::get('dbal.connections.', $instance, []), $config);
+			$config = array_merge($db, $this->defaultConfig, \Config::get('dbal.connections.'.$instance, []), $config);
 
 			$conn = DriverManager::getConnection($config);
 
