@@ -55,7 +55,7 @@ class FuelServiceProvider extends ServiceProvider
 		// We don't have defined connections
 		if ($connections = \Arr::get($config, 'connections', false) and ! empty($connections))
 		{
-			\Config::set('dbal.connections.__default__', $this->defaultConfig);
+			\Config::set('dbal.connections.__default__', []);
 		}
 	}
 
