@@ -53,7 +53,7 @@ class FuelServiceProvider extends ServiceProvider
 		}
 
 		// We don't have defined connections
-		if ($connections = \Arr::get($config, 'connections', false) and ! empty($connections))
+		if ($connections = \Arr::get($config, 'connections', false) and empty($connections))
 		{
 			\Config::set('dbal.connections.__default__', []);
 		}
@@ -92,6 +92,8 @@ class FuelServiceProvider extends ServiceProvider
 				$logger = $dic->resolve('dbal.logger', [$conn]);
 				$conn->getConfiguration()->setSQLLogger($logger);
 			}
+
+			return $conn;
 		});
 
 		$this->register('dbal.logger', 'Doctrine\\DBAL\\Logging\\ProfilerLogger');
